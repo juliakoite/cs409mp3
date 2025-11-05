@@ -19,6 +19,10 @@ from random import randint
 from random import choice
 from datetime import date
 from time import mktime
+import os
+
+scriptdir = os.path.dirname(os.path.abspath(__file__))
+
 
 def usage():
     print('dbFill.py -u <baseurl> -p <port> -n <numUsers> -t <numTasks>')
@@ -93,12 +97,16 @@ def main(argv):
         d = json.loads(data)
 
         # Store the users id
+        if d['data'] is None:
+            continue
+
         userIDs.append(str(d['data']['_id']))
         userNames.append(str(d['data']['name']))
         userEmails.append(str(d['data']['email']))
 
     # Open 'tasks.txt' for sample task names
-    f = open('tasks.txt','r')
+    #f = open('tasks.txt','r')
+    f = open(os.path.join(scriptdir, 'tasks.txt'), 'r')
     taskNames = f.read().splitlines()
 
     # Loop 'taskCount' number of times
